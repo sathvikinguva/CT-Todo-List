@@ -1,10 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './TodoApp.css';
 
 function TodoApp() {
   const [task, setTask] = useState('');
   const [todos, setTodos] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
+
+  // Load todos from localStorage when component mounts
+  useEffect(() => {
+    const storedTodos = localStorage.getItem('todos');
+    if (storedTodos) {
+      setTodos(JSON.parse(storedTodos));
+    }
+  }, []);
+
+  // Save todos to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
 
   const handleAddTask = () => {
     if (task.trim() === '') return;
